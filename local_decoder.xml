@@ -384,3 +384,17 @@
   <regex>User=(\.+)&</regex>
   <order>user</order>
 </decoder>
+
+
+
+<decoder name="fortigate">
+  <prematch>time=\d+:\d+:\d+\s+devname=\w+\s+devid=\w+\s+logid=\d+</prematch>
+</decoder>
+
+<decoder name="fortigate_traffic_deny">
+  <parent>fortigate</parent>
+  <prematch>action=deny</prematch>
+  <regex offset="after_parent">\.*srcip=(\d+.\d+.\d+.\d+)\.*srcport=(\d+)\s+\.*dstip=(\d+.\d+.\d+.\d+)\s+dstport=(\d+)</regex>
+  <order>srcip,srcport,dstip,dstport</order>
+</decoder>
+
