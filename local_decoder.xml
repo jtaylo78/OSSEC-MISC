@@ -398,3 +398,11 @@
   <order>srcip,srcport,dstip,dstport</order>
 </decoder>
 
+<decoder name="fortigate_ssl_tunnel_up">
+  <parent>fortigate</parent>
+  <prematch>reason="login successfully" msg="SSL tunnel established"</prematch>
+  <regex offset="after_parent">\.*remip=(\d+.\d+.\d+.\d+)\.*user="(\w+)"\s+group="(\w+)"</regex>
+  <order>srcip,user,extra_data</order>
+  <fts>srcip,user,extra_data</fts>
+</decoder>
+
