@@ -390,14 +390,14 @@
 <decoder name="fortigate">
   <prematch>time=\d+:\d+:\d+\s+devname=\w+\s+devid=\w+\s+logid=\d+</prematch>
 </decoder>
-
+<!--
 <decoder name="fortigate_traffic_deny">
   <parent>fortigate</parent>
   <prematch>action=deny</prematch>
   <regex offset="after_parent">\.*srcip=(\d+.\d+.\d+.\d+)\.*srcport=(\d+)\s+\.*dstip=(\d+.\d+.\d+.\d+)\s+dstport=(\d+)</regex>
   <order>srcip,srcport,dstip,dstport</order>
 </decoder>
-
+-->
 <decoder name="fortigate_ssl_tunnel_up">
   <parent>fortigate</parent>
   <prematch>reason="login successfully" msg="SSL tunnel established"</prematch>
@@ -406,3 +406,27 @@
   <fts>srcip,user,extra_data</fts>
 </decoder>
 
+
+<decoder name="fortigate_ssl_vpn">
+  <parent>fortigate</parent>
+  <prematch>subtype=vpn</prematch>
+  <regex offset="after_parent">\.*remip=(\d+.\d+.\d+.\d+)\.*user="(\w+)"\s+group="(\w+)"</regex>
+  <order>srcip,user,extra_data</order>
+  <fts>srcip,user,extra_data</fts>
+</decoder>
+
+
+<decoder name="fortigate_traffic">
+  <parent>fortigate</parent>
+  <prematch>type=traffic</prematch>
+  <regex offset="after_parent">\.*srcip=(\d+.\d+.\d+.\d+)\.*srcport=(\d+)\s+\.*dstip=(\d+.\d+.\d+.\d+)\.*dstport=(\d+)\s+\.*action=(\w+)\s+\.*</regex>
+  <order>srcip,srcport,dstip,dstport,action</order>
+</decoder>
+<!--
+<decoder name="fortigate_traffic_user">
+  <parent>fortigate</parent>
+  <prematch>type=traffic</prematch>
+  <regex offset="after_parent">\.*srcip=(\d+.\d+.\d+.\d+)\.*srcport=(\d+)\s+\.*dstip=(\d+.\d+.\d+.\d+)\s+dstport=(\d+)\s+\.*action=(\w+)\s+\.*user="(\w+)"</regex>
+  <order>srcip,srcport,dstip,dstport,action,user</order>
+</decoder>
+-->
